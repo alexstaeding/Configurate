@@ -117,6 +117,24 @@ public interface ConfigurationNode {
     ConfigurationNode getNode(@NonNull Object... path);
 
     /**
+     * Gets the node at the given (relative) path, possibly traversing multiple levels of nodes.
+     *
+     * <p>This is the main method used to navigate through the configuration.</p>
+     *
+     * <p>The path parameter effectively consumes a list of keys, which locate the unique position
+     * of a given node within the structure.</p>
+     *
+     * <p>A node is <b>always</b> returned by this method. If the given node does not exist in the
+     * structure, a {@link #isVirtual() virtual} node will be returned which represents the
+     * position.</p>
+     *
+     * @param path The path to fetch the node at
+     * @return The node at the given path, possibly virtual
+     */
+    @NonNull
+        ConfigurationNode getNode(@NonNull List<Object> path);
+
+    /**
      * Gets if this node is virtual.
      *
      * <p>Virtual nodes are nodes which are not attached to a wider configuration structure.</p>

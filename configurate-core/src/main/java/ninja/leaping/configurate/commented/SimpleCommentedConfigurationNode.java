@@ -107,6 +107,12 @@ public class SimpleCommentedConfigurationNode extends SimpleConfigurationNode im
 
     @NonNull
     @Override
+    public SimpleCommentedConfigurationNode getNode(@NonNull List<Object> path) {
+        return (SimpleCommentedConfigurationNode) super.getNode(path);
+    }
+
+    @NonNull
+    @Override
     @SuppressWarnings("unchecked")
     public List<? extends SimpleCommentedConfigurationNode> getChildrenList() {
         return (List<SimpleCommentedConfigurationNode>) super.getChildrenList();

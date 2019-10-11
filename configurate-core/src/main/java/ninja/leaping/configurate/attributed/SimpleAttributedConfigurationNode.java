@@ -175,6 +175,12 @@ public class SimpleAttributedConfigurationNode extends SimpleConfigurationNode i
 
     @NonNull
     @Override
+    public SimpleAttributedConfigurationNode getNode(@NonNull List<Object> path) {
+        return (SimpleAttributedConfigurationNode) super.getNode(path);
+    }
+
+    @NonNull
+    @Override
     @SuppressWarnings("unchecked")
     public List<? extends SimpleAttributedConfigurationNode> getChildrenList() {
         return (List<SimpleAttributedConfigurationNode>) super.getChildrenList();
