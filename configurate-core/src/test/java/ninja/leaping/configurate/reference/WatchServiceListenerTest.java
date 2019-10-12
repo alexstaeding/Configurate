@@ -19,7 +19,6 @@ package ninja.leaping.configurate.reference;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.TempDirectory;
 
 import java.io.IOException;
 import java.nio.file.Files;

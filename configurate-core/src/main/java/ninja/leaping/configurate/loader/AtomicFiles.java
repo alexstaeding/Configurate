@@ -58,6 +58,7 @@ public final class AtomicFiles {
      * @param path The path
      * @param charset The charset to be used by the writer
      * @return The writer factory
+     * @throws IOException For any underlying filesystem errors
      */
     @NonNull
     public static BufferedWriter createAtomicBufferedWriter(@NonNull Path path, @NonNull Charset charset) throws IOException {

@@ -207,7 +207,7 @@ public class SimpleConfigurationNode implements ConfigurationNode {
             return storeDefault(type, def);
         }
 
-        TypeSerializer serial = getOptions().getSerializers().get(type);
+        TypeSerializer<T> serial = getOptions().getSerializers().get(type);
         if (serial == null) {
             if (type.getRawType().isInstance(value)) {
                 return (T) type.getRawType().cast(value);
@@ -215,7 +215,7 @@ public class SimpleConfigurationNode implements ConfigurationNode {
                 return storeDefault(type, def);
             }
         }
-        return (T) serial.deserialize(type, this);
+        return serial.deserialize(type, this);
     }
 
     @Override
@@ -226,7 +226,7 @@ public class SimpleConfigurationNode implements ConfigurationNode {
             return storeDefault(type, defSupplier.get());
         }
 
-        TypeSerializer serial = getOptions().getSerializers().get(type);
+        TypeSerializer<T> serial = getOptions().getSerializers().get(type);
         if (serial == null) {
             if (type.getRawType().isInstance(value)) {
                 return (T) type.getRawType().cast(value);
@@ -234,7 +234,7 @@ public class SimpleConfigurationNode implements ConfigurationNode {
                 return storeDefault(type, defSupplier.get());
             }
         }
-        return (T) serial.deserialize(type, this);
+        return serial.deserialize(type, this);
     }
 
     @NonNull

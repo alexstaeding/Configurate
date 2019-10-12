@@ -63,7 +63,7 @@ public class ObjectMapper<T> {
      * @param obj The object
      * @param <T> The object type
      * @return An appropriate object mapper instance.
-     * @throws ObjectMappingException
+     * @throws ObjectMappingException If anny error occurs creating the object mapper
      */
     @SuppressWarnings("unchecked")
     public static <T> ObjectMapper<T>.BoundInstance forObject(@NonNull T obj) throws ObjectMappingException {
@@ -79,7 +79,7 @@ public class ObjectMapper<T> {
         private final TypeToken<?> fieldType;
         private final String comment;
 
-        public FieldData(Field field, String comment) throws ObjectMappingException {
+        public FieldData(Field field, String comment) {
             this.field = field;
             this.comment = comment;
             this.fieldType = TypeToken.of(field.getGenericType());
@@ -106,7 +106,7 @@ public class ObjectMapper<T> {
             }
         }
 
-        @SuppressWarnings("rawtypes")
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public void serializeTo(Object instance, ConfigurationNode node) throws ObjectMappingException {
             try {
                 Object fieldVal = this.field.get(instance);
@@ -184,7 +184,7 @@ public class ObjectMapper<T> {
      * Create a new object mapper of a given type
      *
      * @param clazz The type this object mapper will work with
-     * @throws ObjectMappingException if the provided class is in someway invalid
+     * @throws ObjectMappingException When errors occur discovering fields in the class
      */
     protected ObjectMapper(Class<T> clazz) throws ObjectMappingException {
         this.clazz = clazz;

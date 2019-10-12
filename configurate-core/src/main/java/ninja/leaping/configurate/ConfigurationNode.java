@@ -37,7 +37,7 @@ import java.util.function.Supplier;
  * {@link ConfigurationNode}, and the links between them.</p>
  *
  * <p>{@link ConfigurationNode}s can hold different types of {@link ValueType values}. They can:</p>
- * <p>
+ *
  * <ul>
  *     <li>Hold a single "scalar" value ({@link ValueType#SCALAR})</li>
  *     <li>Represent a "list" of child {@link ConfigurationNode}s ({@link ValueType#LIST})</li>
@@ -329,6 +329,7 @@ public interface ConfigurationNode {
      * @param type The expected type
      * @param <T> The expected type
      * @return An immutable copy of the values contained
+     * @throws ObjectMappingException If any value fails to be converted to the requested type
      */
     @NonNull
     default <T> List<T> getList(@NonNull TypeToken<T> type) throws ObjectMappingException {
@@ -346,6 +347,7 @@ public interface ConfigurationNode {
      * @param <T> The expected type
      * @return An immutable copy of the values contained that could be successfully converted, or {@code def} if no
      * values could be converted
+     * @throws ObjectMappingException If any value fails to be converted to the requested type
      */
     <T> List<T> getList(@NonNull TypeToken<T> type, @Nullable List<T> def) throws ObjectMappingException;
 
@@ -361,6 +363,7 @@ public interface ConfigurationNode {
      * @param <T> The expected type
      * @return An immutable copy of the values contained that could be successfully converted, or {@code def} if no
      * values could be converted
+     * @throws ObjectMappingException If any value fails to be converted to the requested type
      */
     <T> List<T> getList(@NonNull TypeToken<T> type, @NonNull Supplier<List<T>> defSupplier) throws ObjectMappingException;
 
@@ -503,6 +506,7 @@ public interface ConfigurationNode {
      * @param type The type to deserialize to
      * @param <T> the type to get
      * @return the value if present and of the proper type, else null
+     * @throws ObjectMappingException If the value fails to be converted to the requested type
      */
     @Nullable
     default <T> T getValue(@NonNull TypeToken<T> type) throws ObjectMappingException {
@@ -522,6 +526,7 @@ public interface ConfigurationNode {
      * @param def The value to return if no value or value is not of appropriate type
      * @param <T> the type to get
      * @return the value if of the proper type, else {@code def}
+     * @throws ObjectMappingException If the value fails to be converted to the requested type
      */
     <T> T getValue(@NonNull TypeToken<T> type, T def) throws ObjectMappingException;
 
@@ -539,6 +544,7 @@ public interface ConfigurationNode {
      *                    value of the correct type
      * @param <T> the type to get
      * @return the value if of the proper type, else {@code def}
+     * @throws ObjectMappingException If the value fails to be converted to the requested type
      */
     <T> T getValue(@NonNull TypeToken<T> type, @NonNull Supplier<T> defSupplier) throws ObjectMappingException;
 
@@ -567,6 +573,7 @@ public interface ConfigurationNode {
      * @param value The value to set
      * @param <T> The type to serialize to
      * @return this
+     * @throws ObjectMappingException If the value fails to be converted to the requested type. No change will be made to the node.
      */
     @NonNull
     default <T> ConfigurationNode setValue(@NonNull TypeToken<T> type, @Nullable T value) throws ObjectMappingException {

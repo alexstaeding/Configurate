@@ -144,6 +144,7 @@ public class TypeSerializers {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private static class EnumValueSerializer implements TypeSerializer<Enum> {
         @Override
         @SuppressWarnings("unchecked") // i continue to hate generics
@@ -153,8 +154,7 @@ public class TypeSerializers {
                 throw new ObjectMappingException("No value present in node " + value);
             }
 
-            Optional<Enum> ret = (Optional) EnumLookup.lookupEnum(type.getRawType().asSubclass(Enum.class),
-                    enumConstant); // XXX: intellij says this cast is optional but it isnt
+            Optional<Enum<?>> ret = EnumLookup.lookupEnum((Class) type.getRawType(), enumConstant);
             if (!ret.isPresent()) {
                 throw new ObjectMappingException("Invalid enum constant provided for " + value.getKey() + ": " +
                         "Expected a value of enum " + type + ", got " + enumConstant);
@@ -164,7 +164,7 @@ public class TypeSerializers {
 
         @Override
         public void serialize(@NonNull TypeToken<?> type, @Nullable Enum obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
-            value.setValue(obj.name());
+            value.setValue(obj == null ? null : obj.name());
         }
     }
 
@@ -238,7 +238,7 @@ public class TypeSerializers {
                 throw new ObjectMappingException("Raw types are not supported for collections");
             }
             TypeToken<?> entryType = type.resolveType(List.class.getTypeParameters()[0]);
-            TypeSerializer entrySerial = value.getOptions().getSerializers().get(entryType);
+            TypeSerializer<?> entrySerial = value.getOptions().getSerializers().get(entryType);
             if (entrySerial == null) {
                 throw new ObjectMappingException("No applicable type serializer for type " + entryType);
             }
@@ -260,6 +260,7 @@ public class TypeSerializers {
         }
 
         @Override
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public void serialize(@NonNull TypeToken<?> type, @Nullable List<?> obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
             if (!(type.getType() instanceof ParameterizedType)) {
                 throw new ObjectMappingException("Raw types are not supported for collections");
@@ -269,9 +270,13 @@ public class TypeSerializers {
             if (entrySerial == null) {
                 throw new ObjectMappingException("No applicable type serializer for type " + entryType);
             }
-            value.setValue(ImmutableList.of());
-            for (Object ent : obj) {
-                entrySerial.serialize(entryType, ent, value.getAppendedNode());
+            if (obj == null) {
+                value.setValue(null);
+            } else {
+                value.setValue(ImmutableList.of());
+                for (Object ent : obj) {
+                    entrySerial.serialize(entryType, ent, value.getAppendedNode());
+                }
             }
         }
     }

@@ -38,7 +38,7 @@ public class YAMLConfigurationLoaderTest {
     @Test
     public void testSimpleLoading() throws IOException {
         URL url = getClass().getResource("/example.yml");
-        ConfigurationLoader loader = YAMLConfigurationLoader.builder()
+        ConfigurationLoader<ConfigurationNode> loader = YAMLConfigurationLoader.builder()
                 .setURL(url).build();
         ConfigurationNode node = loader.load();
         assertEquals("unicorn", node.getNode("test", "op-level").getValue());
@@ -46,8 +46,9 @@ public class YAMLConfigurationLoaderTest {
         assertEquals("dog park", node.getNode("other", "location").getValue());
 
 
-        Function<Object, Map<String, List>> f = o -> (HashMap<String, List>)o;
-        List<Map<String, List>> fooList = new ArrayList<>(node.getNode("foo").getList(f));
+        @SuppressWarnings("unchecked")
+        Function<Object, Map<String, List<?>>> f = o -> (HashMap<String, List<?>>)o;
+        List<Map<String, List<?>>> fooList = new ArrayList<>(node.getNode("foo").getList(f));
         assertEquals(0, fooList.get(0).get("bar").size());
     }
 }

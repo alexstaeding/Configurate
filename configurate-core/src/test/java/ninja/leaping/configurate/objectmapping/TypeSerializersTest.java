@@ -164,6 +164,7 @@ public class TypeSerializersTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void testListRawTypes() throws ObjectMappingException {
         final TypeToken<List> rawType = TypeToken.of(List.class);
         final TypeSerializer<List> serial = SERIALIZERS.get(rawType);
@@ -328,6 +329,7 @@ public class TypeSerializersTest {
     }
 
     private static class CustomNumber extends Number {
+        public static final long serialVersionUID = 4647727438607023527L;
 
         @Override
         public int intValue() {

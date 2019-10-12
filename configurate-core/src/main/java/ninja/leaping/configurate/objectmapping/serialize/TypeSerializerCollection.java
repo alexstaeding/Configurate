@@ -144,6 +144,7 @@ public class TypeSerializerCollection {
     }
 
     private static final class SerializerList extends CopyOnWriteArrayList<RegisteredSerializer> implements Function<TypeToken<?>, TypeSerializer<?>> {
+        public static final long serialVersionUID = -8715052661797267168L;
 
         @Override
         public TypeSerializer<?> apply(TypeToken<?> type) {

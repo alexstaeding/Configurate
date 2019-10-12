@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Utility class to cache more flexible enum lookup.
  *
  * <p>While normally case and punctuation have to match exactly, this method performs lookup that:</p>
- * <p>
+ *
  * <ul>
  *     <li>is case-insensitive</li>
  *     <li>ignores underscores</li>
